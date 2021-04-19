@@ -1,10 +1,13 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, SystemJsNgModuleLoader } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Details } from '../details';
-import { Moment } from 'moment';
-import * as moment from 'moment';
+
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app.state';
+import { addPost, updatePost } from '../state/post.actions';
+import { getPostById } from '../state/post.selector';
 
 
 
@@ -16,21 +19,30 @@ import * as moment from 'moment';
 export class DetailsComponent implements OnInit {
 
   
-  id:any
+  // id:any
   registerForm: FormGroup;
     submitted = false;
     details: Details
   usersJson: any[];
-  constructor(private formBuilder: FormBuilder,private httpClient:HttpClient,private route:ActivatedRoute,private router:Router) { }
+  constructor(private formBuilder: FormBuilder,private httpClient:HttpClient,private route:ActivatedRoute,private router:Router,private store:Store<AppState>) { }
 
+  post: Details;
+  id2 :any
   isAddMode:any
   ngOnInit(): void {
     this.route.paramMap.subscribe(params=>{
-      this.id = params.get('id');
-      console.log(this.id);
+
+      const id = params.get('id');
+      this.id2 = params.get('id')
+      console.log(id);
+      this.store.select(getPostById,{id}).subscribe(data=>{
+        this.post = data
+        console.log(this.post)
+        console.log(data)
+      })
     });
 
-    this.isAddMode = !this.id;
+    this.isAddMode = !this.id2;
 
     this.date = new Date()
 
@@ -47,11 +59,9 @@ export class DetailsComponent implements OnInit {
   });
 
   if(!this.isAddMode){
-    this.httpClient.get<Details>("http://localhost:3000/details/"+this.id).subscribe(
-      (data)=> {this.registerForm.patchValue(data)
-      this.details = data
-      }
-    )
+    this.registerForm.patchValue(this.post)
+      this.details = this.post;
+      
   }
   }
 
@@ -84,21 +94,42 @@ date: Date;
 
 createUser() {
   alert('thanks for Sign Up'+ new Date().toLocaleString())
-    console.log("hello")
-    let data = this.registerForm.value
-    console.log(data)
-    console.log("hi")
-    // let now = moment().format("DD-MM-YYYY HH:mm");
-    // this.format1 = now;
-    data["date"] = new Date()
-    console.log(data)
-    this.httpClient.post<Details>("http://localhost:3000/details",data).subscribe(
-      (data)=>{
-        this.details=data
-        console.log(data)
-        console.log(this.details)
-      }
-    )
+    // console.log("hello")
+    // let data = this.registerForm.value
+    // console.log(data)
+    // console.log("hi")
+    // // let now = moment().format("DD-MM-YYYY HH:mm");
+    // // this.format1 = now;
+    // data["date"] = new Date()
+    // console.log(data)
+    // this.httpClient.post<Details>("http://localhost:3000/details",data).subscribe(
+    //   (data)=>{
+    //     this.details=data
+    //     console.log(data)
+    //     console.log(this.details)
+    //   }
+    // )
+
+
+    // using store
+    const post : Details ={
+      firstName:this.registerForm.value.firstName,
+      lastName:this.registerForm.value.lastName,
+      email:this.registerForm.value.email,
+      mobile:this.registerForm.value.mobile,
+      street:this.registerForm.value.street,
+      city:this.registerForm.value.city,
+      state:this.registerForm.value.state,
+      pincode:this.registerForm.value.pincode,
+      date:this.registerForm.value.date
+      
+    };
+
+    post['date'] = new Date().toLocaleString()
+    
+    console.log(post)
+    this.store.dispatch(addPost({post}));
+    
 
     this.router.navigate(['/dashboard'])
 
@@ -106,18 +137,34 @@ createUser() {
     
 }
 updateUser() {
-  let data = this.registerForm.value
-  console.log(data)
-  console.log("hi")
-  data["date"] = new Date()
-  console.log(data) 
-  this.httpClient.put<Details>("http://localhost:3000/details/"+this.id,data).subscribe(
-    (response)=>{
-      this.details = response
-      console.log(this.details)
-      console.log(response)
-    }
-  )
+  // let data = this.registerForm.value
+  // console.log(data)
+  // console.log("hi")
+  // data["date"] = new Date()
+  // console.log(data) 
+  // this.httpClient.put<Details>("http://localhost:3000/details/"+this.id,data).subscribe(
+  //   (response)=>{
+  //     this.details = response
+  //     console.log(this.details)
+  //     console.log(response)
+  //   }
+  // )
+  const firstName = this.registerForm.value.firstName;
+  const lastName = this.registerForm.value.lastName;
+  const email = this.registerForm.value.email;
+  const mobile = this.registerForm.value.mobile;
+  const street = this.registerForm.value.street;
+  const city = this.registerForm.value.city;
+  const state = this.registerForm.value.state;
+  const pincode = this.registerForm.value.pincode;
+  const date = new Date().toLocaleString()
+
+  const post: Details={
+    id:this.post.id,
+    firstName,lastName,email,mobile,street,city,state,pincode,date
+  };
+
+  this.store.dispatch(updatePost({post}));
   this.router.navigate(['/dashboard'])
 
 }

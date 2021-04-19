@@ -1,5 +1,5 @@
 export class Details{
-    id:number
+    id?:number
     firstName:string
     lastName:string
     email:string

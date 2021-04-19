@@ -16,6 +16,11 @@ import {MatInputModule} from '@angular/material/input'
 import {MatSelectModule} from '@angular/material/select'
 import {MatTableModule} from '@angular/material/table';
 import {MatIconModule} from '@angular/material/icon';
+import { StoreModule } from '@ngrx/store';
+
+import { appReducer } from 'src/app.state';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from 'src/environments/environment';
 
 
 
@@ -41,7 +46,12 @@ import {MatIconModule} from '@angular/material/icon';
     MatInputModule,
     MatSelectModule,
     MatTableModule,
-    MatIconModule
+    MatIconModule,
+    StoreModule.forRoot(appReducer),
+    StoreDevtoolsModule.instrument({
+      
+      logOnly: environment.production, // Restrict extension to log-only mode
+    })
     
   ],
   providers: [],

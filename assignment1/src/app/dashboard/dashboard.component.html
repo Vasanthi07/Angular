@@ -3,6 +3,9 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <div class="container">
     <div class="row p-3 m-3">
+        <div class="col-auto p-3 mt-3">
+            <button mat-raised-button color="accent" class="form-control" (click)="showAll()">show all</button>
+        </div>
         <div class="col-auto p-3 m-3">
             <!-- <button class="btn btn-primary" routerLink="/details">Add</button> -->
             <p>
@@ -75,6 +78,9 @@
 
         </table>
     </div>
+
+    <!-- using store -->
+
     <!-- <div class="row p-3 m-3 ">
         <div class="col-auto p-3 m-3">
             <div *ngIf="disp">
@@ -97,7 +103,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let key of selectedUsers">
+                        <tr *ngFor="let key of posts| async">
                             <td>{{key.id}}</td>
                             <td>{{key.firstName}}</td>
                             <td>{{key.lastName}}</td>
@@ -115,8 +121,8 @@
 
             </div>
 
-        </div> -->
-    <!-- </div> -->
+        </div>
+    </div> -->
 
 </div>
 
