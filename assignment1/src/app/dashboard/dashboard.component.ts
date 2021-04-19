@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { AppState } from 'src/app.state';
 import { Details } from '../details';
+import { deletePost } from '../state/post.actions';
 import { getPosts } from '../state/post.selector';
 
 @Component({
@@ -15,7 +16,7 @@ import { getPosts } from '../state/post.selector';
 })
 export class DashboardComponent implements OnInit {
 
-  colTable : string[] = ['id','firstName','lastName','email','mobile','street','city','state','pincode','date','edit']
+  colTable : string[] = ['id','firstName','lastName','email','mobile','street','city','state','pincode','date','edit','delete']
   dsColTable : MatTableDataSource<Details>;
   
   details:Array<Details>
@@ -86,6 +87,14 @@ export class DashboardComponent implements OnInit {
     console.log(this.selectedUsers[0].id)
     this.dsColTable.data = this.selectedUsers
    
+  }
+
+  deletePost(id:number){
+    if(confirm("Are you sure you want to delete")){
+      // console.log("delete the post")
+      this.store.dispatch(deletePost({id}));
+      this.showAll()
+    }
   }
   
 }

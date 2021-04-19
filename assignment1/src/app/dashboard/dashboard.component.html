@@ -73,6 +73,12 @@
                     <mat-icon [routerLink]="['/details/',selectedUsers.id]">edit</mat-icon>
                 </td>
             </ng-container>
+            <ng-container matColumnDef="delete">
+                <th mat-header-cell *matHeaderCellDef> Delete </th>
+                <td mat-cell *matCellDef="let selectedUsers ">
+                    <mat-icon (click)="deletePost(selectedUsers.id)">delete</mat-icon>
+                </td>
+            </ng-container>
             <tr mat-header-row *matHeaderRowDef="colTable"></tr>
             <tr mat-row *matRowDef="let row; columns: colTable;"></tr>
 
