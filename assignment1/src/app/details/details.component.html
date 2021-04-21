@@ -1,150 +1,110 @@
 <!-- <p>details works!</p> -->
-<div class="jumbotron">
+<div class="form-container">
     <div class="container">
-        <div class="row">
-            <div class="col-md-6 offset-md-3">
-                <h3 *ngIf="isAddMode" style="font-family: 'Times New Roman', Times, serif;">Add Details</h3>
-                <h3 *ngIf="!isAddMode" style="font-family: 'Times New Roman', Times, serif;">Update Details</h3>
-                <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-                    <div class="form-group">
-                        <mat-form-field appearance="outline">
-                            <mat-label>First Name</mat-label>
-                            <input matInput formControlName="firstName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }">
+        <h3 *ngIf="isAddMode" class="headings"><strong>Add Details</strong></h3>
+        <h3 *ngIf="!isAddMode" class="headings">Update Details</h3>
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
 
-                            <mat-error *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
-                                <div *ngIf="f.firstName.errors.required">First Name is Mandatory</div>
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-                    <div class="form-group">
-                        <mat-form-field appearance="outline">
-                            <mat-label>Last Name</mat-label>
-                            <input matInput formControlName="lastName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }">
+            <div fxLayout>
+                <div class="textField">
+                    <mat-form-field appearance="outline" class="form-field">
+                        <mat-label>First Name</mat-label>
+                        <input matInput formControlName="firstName">
+                        <mat-error *ngIf="f.firstName.errors && f.firstName.touched">
+                            <div *ngIf="f.firstName.errors.required">First Name is Mandatory</div>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="textField">
+                    <mat-form-field appearance="outline" class="form-field">
+                        <mat-label>Last Name</mat-label>
+                        <input matInput formControlName="lastName">
 
-                            <mat-error *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
-                                <div *ngIf="f.lastName.errors.required">last Name is Mandatory</div>
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-                    <div class="form-group">
-                        <mat-form-field appearance="outline">
-                            <mat-label>Email</mat-label>
-                            <input matInput formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
-
-                            <mat-error *ngIf="submitted && f.email.errors" class="invalid-feedback">
-                                <div *ngIf="f.email.errors.required">Email is Mandatory</div>
-                                <div *ngIf="f.email.errors.email">Email must be a valid email address</div>
-                            </mat-error>
-                        </mat-form-field>
-
-                    </div>
-                    <div class="form-group">
-                        <mat-form-field appearance="outline">
-                            <mat-label>Mobile No</mat-label>
-                            <input matInput formControlName="mobile" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.mobile.errors }" />
-                            <mat-error *ngIf="submitted && f.mobile.errors" class="invalid-feedback">
-                                <div *ngIf="f.mobile.errors.required">Mobile Number is Mandatory</div>
-                                <div *ngIf="f.mobile.errors.pattern">Must be 10 digits</div>
-                            </mat-error>
-                        </mat-form-field>
-
-
-                    </div>
-                    <div class="form-group">
-
-                        <h3>Address</h3>
-                        <div class="row">
-                            <div class="col auto">
-                                <mat-form-field appearance="outline">
-                                    <mat-label>Street</mat-label>
-
-                                    <input matInput formControlName="street" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.street.errors }" />
-                                    <mat-error *ngIf="submitted && f.street.errors" class="invalid-feedback">
-                                        <div *ngIf="f.street.errors.required">street is Mandatory</div>
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-                            <div class="col auto">
-                                <mat-form-field appearance="outline">
-                                    <mat-label>City</mat-label>
-                                    <input matInput formControlName="city" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.city.errors }" />
-                                    <mat-error *ngIf="submitted && f.city.errors" class="invalid-feedback">
-                                        <div *ngIf="f.city.errors.required">city is Mandatory</div>
-                                        <div *ngIf="f.city.errors.pattern">city is should be text not numbers</div>
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col auto">
-                                <mat-form-field appearance="outline">
-                                    <mat-label>State</mat-label>
-                                    <!-- <mat-select formControlName="state" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.state.errors }">
-                                        <mat-option value="Andhra Pradesh">Andhra Pradesh</mat-option>
-                                        <mat-option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</mat-option>
-                                        <mat-option value="Arunachal Pradesh">Arunachal Pradesh</mat-option>
-                                        <mat-option value="Assam">Assam</mat-option>
-                                        <mat-option value="Bihar">Bihar</mat-option>
-                                        <mat-option value="Chandigarh">Chandigarh</mat-option>
-                                        <mat-option value="Chhattisgarh">Chhattisgarh</mat-option>
-                                        <mat-option value="Dadar and Nagar Haveli">Dadar and Nagar Haveli</mat-option>
-                                        <mat-option value="Daman and Diu">Daman and Diu</mat-option>
-                                        <mat-option value="Delhi">Delhi</mat-option>
-                                        <mat-option value="Lakshadweep">Lakshadweep</mat-option>
-                                        <mat-option value="Puducherry">Puducherry</mat-option>
-                                        <mat-option value="Goa">Goa</mat-option>
-                                        <mat-option value="Gujarat">Gujarat</mat-option>
-                                        <mat-option value="Haryana">Haryana</mat-option>
-                                        <mat-option value="Himachal Pradesh">Himachal Pradesh</mat-option>
-                                        <mat-option value="Jammu and Kashmir">Jammu and Kashmir</mat-option>
-                                        <mat-option value="Jharkhand">Jharkhand</mat-option>
-                                        <mat-option value="Karnataka">Karnataka</mat-option>
-                                        <mat-option value="Kerala">Kerala</mat-option>
-                                        <mat-option value="Madhya Pradesh">Madhya Pradesh</mat-option>
-                                        <mat-option value="Maharashtra">Maharashtra</mat-option>
-                                        <mat-option value="Manipur">Manipur</mat-option>
-                                        <mat-option value="Meghalaya">Meghalaya</mat-option>
-                                        <mat-option value="Mizoram">Mizoram</mat-option>
-                                        <mat-option value="Nagaland">Nagaland</mat-option>
-                                        <mat-option value="Odisha">Odisha</mat-option>
-                                        <mat-option value="Punjab">Punjab</mat-option>
-                                        <mat-option value="Rajasthan">Rajasthan</mat-option>
-                                        <mat-option value="Sikkim">Sikkim</mat-option>
-                                        <mat-option value="Tamil Nadu">Tamil Nadu</mat-option>
-                                        <mat-option value="Telangana">Telangana</mat-option>
-                                        <mat-option value="Tripura">Tripura</mat-option>
-                                        <mat-option value="Uttar Pradesh">Uttar Pradesh</mat-option>
-                                        <mat-option value="Uttarakhand">Uttarakhand</mat-option>
-                                        <mat-option value="West Bengal">West Bengal</mat-option>
-
-                                    </mat-select> -->
-                                    <input matInput formControlName="state" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.state.errors }" />
-                                    <mat-error *ngIf="submitted && f.state.errors" class="invalid-feedback">
-                                        <div *ngIf="f.state.errors.required">state is Mandatory</div>
-                                        <div *ngIf="f.state.errors.pattern">state should be text not numbers</div>
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-                            <div class="col auto">
-                                <mat-form-field appearance="outline">
-                                    <mat-label>Pincode</mat-label>
-                                    <input matInput formControlName="pincode" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.pincode.errors }" />
-                                    <mat-error *ngIf="submitted && f.pincode.errors" class="invalid-feedback">
-                                        <div *ngIf="f.pincode.errors.required">pincode is Mandatory</div>
-                                        <div *ngIf="f.pincode.errors.pattern">pincode should numbers and of length 6</div>
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="form-group">
-                        <button mat-raised-button color="primary">Add</button>
-
-                    </div>
-                </form>
+                        <mat-error *ngIf="f.lastName.errors" class="invalid-feedback">
+                            <div *ngIf="f.lastName.errors.required">last Name is Mandatory</div>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
             </div>
-        </div>
+
+
+            <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email" />
+
+                <mat-error *ngIf="f.email.errors" class="invalid-feedback">
+                    <div *ngIf="f.email.errors.required">Email is Mandatory</div>
+                    <div *ngIf="f.email.errors.email">Email must be a valid email address</div>
+                </mat-error>
+            </mat-form-field>
+
+
+
+            <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Mobile No</mat-label>
+                <input matInput formControlName="mobile" />
+                <mat-error *ngIf="f.mobile.errors" class="invalid-feedback">
+                    <div *ngIf="f.mobile.errors.required">Mobile Number is Mandatory</div>
+                    <div *ngIf="f.mobile.errors.pattern">Must be 10 digits</div>
+                </mat-error>
+            </mat-form-field>
+
+            <h3 class="headings"><strong>Address</strong></h3>
+            <div fxLayout>
+                <div class="textField">
+                    <mat-form-field appearance="outline" class="form-field">
+                        <mat-label>Street</mat-label>
+
+                        <input matInput formControlName="street" />
+                        <mat-error *ngIf="f.street.errors" class="invalid-feedback">
+                            <div *ngIf="f.street.errors.required">street is Mandatory</div>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="textField">
+                    <mat-form-field appearance="outline" class="form-field">
+                        <mat-label>City</mat-label>
+                        <input matInput formControlName="city" />
+                        <mat-error *ngIf="f.city.errors" class="invalid-feedback">
+                            <div *ngIf="f.city.errors.required">city is Mandatory</div>
+                            <div *ngIf="f.city.errors.pattern">city is should be text not numbers</div>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxLayout>
+                <div class="textField">
+                    <mat-form-field appearance="outline" class="form-field">
+                        <mat-label>State</mat-label>
+                        <mat-select formControlName="state">
+                            <mat-option *ngFor="let state of states" [value]="state">
+                                {{state}}
+                            </mat-option>
+                        </mat-select>
+
+                        <!-- <input matInput formControlName="state" /> -->
+                        <mat-error *ngIf="f.state.errors" class="invalid-feedback">
+                            <div *ngIf="f.state.errors.required">state is Mandatory</div>
+
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="textField">
+                    <mat-form-field appearance="outline" class="form-field">
+                        <mat-label>Pincode</mat-label>
+                        <input matInput formControlName="pincode" />
+                        <mat-error *ngIf="f.pincode.errors" class="invalid-feedback">
+                            <div *ngIf="f.pincode.errors.required">pincode is Mandatory</div>
+                            <div *ngIf="f.pincode.errors.pattern">pincode should numbers and of length 6</div>
+                        </mat-error>
+                    </mat-form-field>
+
+                </div>
+            </div>
+            <div>
+                <button mat-raised-button color="primary" class="form-field">Add</button>
+            </div>
+        </form>
+
     </div>
 </div>

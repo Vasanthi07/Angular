@@ -1,134 +1,58 @@
 <!-- <p>dashboard works!</p> -->
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
 <div class="container">
-    <div class="row p-3 m-3">
-        <div class="col-auto p-3 mt-3">
-            <button mat-raised-button color="accent" class="form-control" (click)="showAll()">show all</button>
-        </div>
-        <div class="col-auto p-3 m-3">
+    <div fxLayout="row" fxLayout.xs="column" class="dashboard">
+        <div>
+            <button mat-raised-button color="primary" class="form-control" (click)="showAll()">show all</button>
+        </div>&nbsp;
+        <div>
             <!-- <button class="btn btn-primary" routerLink="/details">Add</button> -->
             <p>
-                <mat-icon routerLink="/details" style="height: 10px; font-size: 40px;">person_add</mat-icon>
+                <mat-icon routerLink="/details" style="height: 10px; font-size: 40px; margin-right: 12px; ">person_add&nbsp;</mat-icon>
             </p>
-        </div>
-        <div class="col-auto p-3 mt-3">
-            <input class="form-control" type="datetime-local" name="search" [(ngModel)]="searchText">
-        </div>
-        <div class="col-auto p-3 mt-3">
-            <input class="form-control" type="datetime-local" name="searchto" [(ngModel)]="searchTextto">
-        </div>
-        <div class="col-auto p-3 mt-3">
-            <button mat-raised-button color="accent" class="form-control" (click)="search()">search</button>
-        </div>
+        </div>&nbsp;
+        <div>
+            <input type="datetime-local" name="search" [(ngModel)]="searchText" style="height: 38px;">
+        </div>&nbsp;
+        <div>
+            <input type="datetime-local" name="searchto" [(ngModel)]="searchTextto" style="height: 38px;">
+        </div>&nbsp;
+        <div>
+            <button mat-raised-button color="primary" class="form-control" (click)="search()">search</button>
+        </div>&nbsp;
 
     </div>
     <div *ngIf="disp">
 
 
-        <table mat-table [dataSource]="dsColTable" class="mat-elevation-z8">
-            <ng-container matColumnDef="id">
-                <th mat-header-cell *matHeaderCellDef> Id </th>
-                <td mat-cell *matCellDef="let selectedUsers"> {{selectedUsers.id}} </td>
-            </ng-container>
-            <ng-container matColumnDef="firstName">
-                <th mat-header-cell *matHeaderCellDef> First Name </th>
-                <td mat-cell *matCellDef="let selectedUsers"> {{selectedUsers.firstName}} </td>
-            </ng-container>
-            <ng-container matColumnDef="lastName">
-                <th mat-header-cell *matHeaderCellDef> Last Name </th>
-                <td mat-cell *matCellDef="let selectedUsers"> {{selectedUsers.lastName}} </td>
-            </ng-container>
-            <ng-container matColumnDef="email">
-                <th mat-header-cell *matHeaderCellDef> Email </th>
-                <td mat-cell *matCellDef="let selectedUsers"> {{selectedUsers.email}} </td>
-            </ng-container>
-            <ng-container matColumnDef="mobile">
-                <th mat-header-cell *matHeaderCellDef> Mobile No </th>
-                <td mat-cell *matCellDef="let selectedUsers"> {{selectedUsers.mobile}} </td>
-            </ng-container>
-            <ng-container matColumnDef="street">
-                <th mat-header-cell *matHeaderCellDef> Street </th>
-                <td mat-cell *matCellDef="let selectedUsers"> {{selectedUsers.street}} </td>
-            </ng-container>
-            <ng-container matColumnDef="city">
-                <th mat-header-cell *matHeaderCellDef> City </th>
-                <td mat-cell *matCellDef="let selectedUsers"> {{selectedUsers.city}} </td>
-            </ng-container>
-            <ng-container matColumnDef="state">
-                <th mat-header-cell *matHeaderCellDef> State </th>
-                <td mat-cell *matCellDef="let selectedUsers"> {{selectedUsers.state}} </td>
-            </ng-container>
-            <ng-container matColumnDef="pincode">
-                <th mat-header-cell *matHeaderCellDef> Pincode </th>
-                <td mat-cell *matCellDef="let selectedUsers"> {{selectedUsers.pincode}} </td>
-            </ng-container>
-            <ng-container matColumnDef="date">
-                <th mat-header-cell *matHeaderCellDef> Date </th>
-                <td mat-cell *matCellDef="let selectedUsers"> {{selectedUsers.date}} </td>
-            </ng-container>
-            <ng-container matColumnDef="edit">
-                <th mat-header-cell *matHeaderCellDef> Edit </th>
-                <td mat-cell *matCellDef="let selectedUsers ">
-                    <mat-icon [routerLink]="['/details/',selectedUsers.id]">edit</mat-icon>
-                </td>
-            </ng-container>
-            <ng-container matColumnDef="delete">
-                <th mat-header-cell *matHeaderCellDef> Delete </th>
-                <td mat-cell *matCellDef="let selectedUsers ">
-                    <mat-icon (click)="deletePost(selectedUsers.id)">delete</mat-icon>
-                </td>
-            </ng-container>
-            <tr mat-header-row *matHeaderRowDef="colTable"></tr>
-            <tr mat-row *matRowDef="let row; columns: colTable;"></tr>
+        <mat-table [dataSource]="dsColTable" class="mat-elevation-z8">
+            <ng-container [matColumnDef]="column" *ngFor="let column of colTable">
+                <ng-container *ngIf="column !== 'edit' && column !== 'delete'">
 
-        </table>
+                    <mat-header-cell *matHeaderCellDef> {{column}} </mat-header-cell>
+                    <mat-cell *matCellDef="let selectedUsers"> {{selectedUsers[column]}} </mat-cell>
+                </ng-container>
+                <ng-container *ngIf="column === 'edit' ">
+                    <mat-header-cell *matHeaderCellDef> {{column}} </mat-header-cell>
+                    <mat-cell *matCellDef="let selectedUsers ">
+                        <mat-icon [routerLink]="['/details/',selectedUsers.id]">edit</mat-icon>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container *ngIf="column === 'delete' ">
+                    <mat-header-cell *matHeaderCellDef> {{column}} </mat-header-cell>
+                    <mat-cell *matCellDef="let selectedUsers ">
+                        <mat-icon (click)="deletePost(selectedUsers.id)">delete</mat-icon>
+                    </mat-cell>
+                </ng-container>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="colTable"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: colTable;"></mat-row>
+
+        </mat-table>
     </div>
-
-    <!-- using store -->
-
-    <!-- <div class="row p-3 m-3 ">
-        <div class="col-auto p-3 m-3">
-            <div *ngIf="disp">
-
-                <table class="table table-dark table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Email</th>
-                            <th>Mobile</th>
-                            <th>Street</th>
-                            <th>City</th>
-                            <th>State</th>
-                            <th>Pincode</th>
-                            <th>Date</th>
-                            <th>Edit</th>
-
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let key of posts| async">
-                            <td>{{key.id}}</td>
-                            <td>{{key.firstName}}</td>
-                            <td>{{key.lastName}}</td>
-                            <td>{{key.email}}</td>
-                            <td>{{key.mobile}}</td>
-                            <td>{{key.street}}</td>
-                            <td>{{key.city}}</td>
-                            <td>{{key.state}}</td>
-                            <td>{{key.pincode}}</td>
-                            <td>{{key.date}}</td>
-                            <td><span [routerLink]="['/details/',key.id]" class="glyphicon glyphicon-pencil"></span></td>
-                        </tr>
-                    </tbody>
-                </table>
-
-            </div>
-
-        </div>
-    </div> -->
 
 </div>
 

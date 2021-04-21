@@ -12,7 +12,7 @@ export const initialState : PostsState = {
         "mobile": "7890789009",
         "street": "1",
         "city": "aaa",
-        "state": "lll",
+        "state": "Bihar",
         "pincode": "888888",
         "date": '4/18/2021, 10:34:19 PM',
         "id": 1

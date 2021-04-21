@@ -8,6 +8,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from 'src/app.state';
 import { addPost, updatePost } from '../state/post.actions';
 import { getPostById } from '../state/post.selector';
+import { DashboardComponent } from '../dashboard/dashboard.component';
 
 
 
@@ -24,6 +25,43 @@ export class DetailsComponent implements OnInit {
     submitted = false;
     details: Details
   usersJson: any[];
+  states = [ "Andhra Pradesh",
+                "Arunachal Pradesh",
+                "Assam",
+                "Bihar",
+                "Chhattisgarh",
+                "Goa",
+                "Gujarat",
+                "Haryana",
+                "Himachal Pradesh",
+                "Jammu and Kashmir",
+                "Jharkhand",
+                "Karnataka",
+                "Kerala",
+                "Madhya Pradesh",
+                "Maharashtra",
+                "Manipur",
+                "Meghalaya",
+                "Mizoram",
+                "Nagaland",
+                "Odisha",
+                "Punjab",
+                "Rajasthan",
+                "Sikkim",
+                "Tamil Nadu",
+                "Telangana",
+                "Tripura",
+                "Uttarakhand",
+                "Uttar Pradesh",
+                "West Bengal",
+                "Andaman and Nicobar Islands",
+                "Chandigarh",
+                "Dadra and Nagar Haveli",
+                "Daman and Diu",
+                "Delhi",
+                "Lakshadweep",
+                "Puducherry"]
+
   constructor(private formBuilder: FormBuilder,private httpClient:HttpClient,private route:ActivatedRoute,private router:Router,private store:Store<AppState>) { }
 
   post: Details;
@@ -53,7 +91,7 @@ export class DetailsComponent implements OnInit {
       mobile:['',[Validators.required,Validators.pattern("[0-9]{10}")]],
       street:['',[Validators.required]],
       city:['',[Validators.required,Validators.pattern("[a-zA-z]*")]],
-      state:['',[Validators.required,Validators.pattern("[a-zA-z]*")]],
+      state:['',[Validators.required]],
       pincode:['',[Validators.required,Validators.pattern("[0-9]{6}")]],
       // date:['']
   });
@@ -131,6 +169,7 @@ createUser() {
     this.store.dispatch(addPost({post}));
     
 
+    
     this.router.navigate(['/dashboard'])
 
     
@@ -165,6 +204,7 @@ updateUser() {
   };
 
   this.store.dispatch(updatePost({post}));
+  
   this.router.navigate(['/dashboard'])
 
 }

@@ -16,49 +16,50 @@ import { getPosts } from '../state/post.selector';
 })
 export class DashboardComponent implements OnInit {
 
-  colTable : string[] = ['id','firstName','lastName','email','mobile','street','city','state','pincode','date','edit','delete']
-  dsColTable : MatTableDataSource<Details>;
-  
-  details:Array<Details>
+  colTable: string[] = ['id', 'firstName', 'lastName', 'email', 'mobile', 'street', 'city', 'state', 'pincode', 'date', 'edit', 'delete']
+  dsColTable: MatTableDataSource<Details>;
+
+  details: Array<Details>
 
   // @Input ('search') search : string = "";
   searchText;
   searchText1;
   searchTextto;
 
-  posts : Observable<Details[]>;
+  posts: Observable<Details[]>;
 
-  constructor(private httpClient:HttpClient, private store : Store<AppState>) { 
+  constructor(private httpClient: HttpClient, private store: Store<AppState>) {
     this.dsColTable = new MatTableDataSource<Details>();
 
   }
 
-  disp : boolean = false
+  disp: boolean = false
   ngOnInit(): void {
 
 
-  //  this.httpClient.get<Array<Details>>("http://localhost:3000/details").subscribe(
-  //     (data)=>{
-  //       this.details = data
-  //       if(this.details.length>0){
-          
-  //       }
-        
-  //       console.log(this.details)
-  //       console.log(data)
-  //     }
-  //   )
+    //  this.httpClient.get<Array<Details>>("http://localhost:3000/details").subscribe(
+    //     (data)=>{
+    //       this.details = data
+    //       if(this.details.length>0){
 
-   this.posts = this.store.select(getPosts);
+    //       }
+
+    //       console.log(this.details)
+    //       console.log(data)
+    //     }
+    //   )
+
+    this.posts = this.store.select(getPosts);
+
+    // this.showAll()
 
   }
-  
-  posts1:any
-  selectedUsers:any
-  showAll(){
-    this.disp=true
-    this.selectedUsers = this.posts.subscribe((data)=>
-    {
+
+  posts1: any
+  selectedUsers: any
+  showAll() {
+    this.disp = !this.disp
+    this.selectedUsers = this.posts.subscribe((data) => {
       this.posts1 = data
       console.log(data)
       console.log(this.posts1)
@@ -67,34 +68,43 @@ export class DashboardComponent implements OnInit {
     console.log(this.selectedUsers)
     this.dsColTable.data = this.selectedUsers
   }
-  
-  search(){
-    this.ngOnInit()
+
+  search() {
+
     let startDate;
     let endDate;
-    this.disp=true
-    console.log(this.searchText)
-    console.log(this.searchTextto)
-    startDate = new Date(this.searchText).toLocaleString()
-    endDate=new Date(this.searchTextto).toLocaleString()
-    console.log(startDate)
-    console.log(endDate)
-    this.selectedUsers = this.posts.subscribe((data)=>{
-      this.posts1 = data
-    })
-    this.selectedUsers = this.posts1.filter(f => f.date > startDate && f.date < endDate);
-    console.log(this.selectedUsers)
-    console.log(this.selectedUsers[0].id)
-    this.dsColTable.data = this.selectedUsers
-   
+    let d1 = Date.parse(this.searchText);
+    let d2 = Date.parse(this.searchTextto);
+    console.log(d1)
+    console.log(d2)
+    if (d1 > d2) {
+      alert("start date should be less than end date");
+    }
+    else {
+      this.disp = true
+      console.log(this.searchText)
+      console.log(this.searchTextto)
+
+      this.selectedUsers = this.posts.subscribe((data) => {
+        this.posts1 = data
+      })
+      this.selectedUsers = this.posts1.filter(f => Date.parse(f.date) > d1 && Date.parse(f.date) < d2);
+      if (this.selectedUsers == null) {
+        // console.log("hi")
+        this.selectedUsers = []
+      }
+      console.log(this.selectedUsers)
+      this.dsColTable.data = this.selectedUsers
+
+    }
   }
 
-  deletePost(id:number){
-    if(confirm("Are you sure you want to delete")){
+  deletePost(id: number) {
+    if (confirm("Are you sure you want to delete")) {
       // console.log("delete the post")
-      this.store.dispatch(deletePost({id}));
+      this.store.dispatch(deletePost({ id }));
       this.showAll()
     }
   }
-  
+
 }

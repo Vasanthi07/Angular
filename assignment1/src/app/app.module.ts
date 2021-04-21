@@ -21,6 +21,7 @@ import { StoreModule } from '@ngrx/store';
 import { appReducer } from 'src/app.state';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from 'src/environments/environment';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 
 
@@ -38,6 +39,7 @@ import { environment } from 'src/environments/environment';
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
+    FlexLayoutModule,
     Ng2SearchPipeModule,
     FormsModule,
     BrowserAnimationsModule,

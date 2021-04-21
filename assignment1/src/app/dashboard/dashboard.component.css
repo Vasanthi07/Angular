@@ -6,3 +6,30 @@ table {
 table {
     width: 100%;
 }
+
+.dashboard {
+    justify-content: center;
+    padding: 20px;
+}
+
+.dashboard>*:not(:last-child) {
+    margin-right: 20px;
+}
+
+div {
+    /* justify-content: center; */
+    text-align: center;
+    /* align-items: center; */
+}
+
+mat-header-cell,
+mat-row,
+mat-cell {
+    border: solid 1px whitesmoke;
+}
+
+
+/* 
+mat-row {
+    border: solid 1px black;
+} */
